@@ -1,0 +1,25 @@
+resources:
+  - name: testResource
+    type: test/TestResource
+    configuration:
+      foo: ${value1}
+      sourceArtifactory: s_artifactory
+      gitProvider: s_gitHub
+
+pipelines:
+ - name: PipelineExtension_automation
+   steps:
+      - name: step1
+        type: Bash
+        configuration:
+           environmentVariables:
+             value1: "bar"
+           inputResources:
+            - name: testResource
+        execution:
+          onExecute:
+            - $variableValue=$(find_resource_variable testResource foo)
+            - |
+              if [ "$variableValue" != "bar" ]; then
+               exit 1
+              fi
