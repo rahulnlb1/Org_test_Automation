@@ -18,8 +18,7 @@ pipelines:
             - name: testResource
         execution:
           onExecute:
-            - $variableValue="$(find_resource_variable testResource foo)"
             - |
-              if [ "$variableValue" != "bar" ]; then
+              if [ "$(find_resource_variable testResource foo)" != "bar" ]; then
                exit 1
               fi
